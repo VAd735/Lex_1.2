@@ -12,7 +12,7 @@ os.environ["XDG_CACHE_HOME"] = HF_BASE
 from llama_cpp import Llama
 
 # Вказуємо реальний абсолютний шлях до твоєї моделі на диску D:
-MODEL_PATH = r"D:\Lex\models\qwen2.5-3b-instruct-q4_k_m.gguf"
+MODEL_PATH = r"D:\Lex_1.2\models\qwen2.5-3b-instruct-q4_k_m.gguf"
 
 llm = Llama(
     model_path=MODEL_PATH,
@@ -41,5 +41,6 @@ for i, line in enumerate(lines):
     )
 
     print(" AI:", output["choices"][0]["text"].strip())
+
 
 print("\n 🎉🎉🎉 Тренування завершено. ")
