@@ -1,14 +1,14 @@
 import os
 import urllib.request
 
-URL = "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_k_m.gguf"
+MODEL_URL = "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf"
+MODEL_PATH = "model.gguf"
 
-os.makedirs("models", exist_ok=True)
-MODEL_PATH = "models/qwen3b.gguf"
+def ensure_model():
+    if os.path.exists(MODEL_PATH):
+        print("Model already exists")
+        return
 
-if not os.path.exists(MODEL_PATH):
-    print("Downloading model...")
-    urllib.request.urlretrieve(URL, MODEL_PATH)
-    print("Download finished.")
-else:
-    print("Model already exists.")
+    print("Downloading model (1.5B)...")
+    urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+    print("Model downloaded!")
