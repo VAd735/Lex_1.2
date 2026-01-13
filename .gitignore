@@ -1,0 +1,5 @@
+*.gguf
+models/
+__pycache__/
+venv/
+.env
