@@ -1,10 +1,13 @@
 from flask import Flask
-import download_model
-from model import generate_answer
-from telegram import Update
-from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes
 from threading import Thread
 import os
+import download_model
+
+
+from telegram import Update
+from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes
+
+from model import generate_answer
 
 app = Flask(__name__)
 
@@ -13,18 +16,18 @@ def home():
     return "Bot is running!"
 
 async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    reply = generate_answer(update.message.text)
-    await update.message.reply_text(reply)
+    text = update.message.text
+    answer = generate_answer(text)
+    await update.message.reply_text(answer)
 
-def start_telegram_bot():
+def start_bot():
     TOKEN = os.getenv("TOKEN")
-    application = ApplicationBuilder().token(TOKEN).build()
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle))
-    application.run_polling()
+    app_tg = ApplicationBuilder().token(TOKEN).build()
+    app_tg.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle))
+    app_tg.run_polling()
 
 if __name__ == "__main__":
-    # запускаємо Telegram у фоновому потоці
-    Thread(target=start_telegram_bot).start()
-    # Flask сервер для Railway
+    Thread(target=start_bot).start()
+
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
