@@ -1,18 +1,22 @@
 from llama_cpp import Llama
 import os
+from download_model import ensure_model
 
-MODEL_PATH = "models/qwen2.5-3b-instruct-q4_k_m.gguf"
+MODEL_PATH = "model.gguf"
 
-if not os.path.exists(MODEL_PATH):
-    raise RuntimeError("Model file not found. Запусти download_model.py")
+ensure_model()
 
 llm = Llama(
     model_path=MODEL_PATH,
-    n_ctx=1024,
-    n_threads=2
+    n_ctx=2048,
+    n_threads=4
 )
 
-def generate_answer(text):
-    result = llm(f"[INST] {text} [/INST]", max_tokens=150)
-    return result["choices"][0]["text"].strip()
-
+def generate_answer(text: str) -> str:
+    output = llm(
+        f"[INST] {text} [/INST]",
+        max_tokens=200,
+        temperature=0.7,
+        stop=["</s>"]
+    )
+    return output["choices"][0]["text"].strip()
